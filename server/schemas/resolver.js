@@ -50,7 +50,7 @@ const resolvers = {
         { $addToSet: { savedBooks: args.input } },
         { new: true }
       );
-      return { updatedUser };
+      return  updatedUser ;
     },
     removeBook: async (parent, args, context) => {
       if (!context.user) {
@@ -61,7 +61,7 @@ const resolvers = {
         { $pull: { savedBooks: args.bookId } },
         { new: true }
       );
-      return { updatedUser };
+      return  updatedUser ;
     },
   },
 };
