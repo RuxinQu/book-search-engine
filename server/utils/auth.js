@@ -1,3 +1,4 @@
+const { hasAnyDirectives } = require("@apollo/client/utilities");
 const jwt = require("jsonwebtoken");
 
 // set token secret and expiration date
@@ -6,7 +7,7 @@ const expiration = "2h";
 
 module.exports = {
   // function for our authenticated routes
-  authMiddleware: function (req, res, next) {
+  authMiddleware: function ({req}) {
     // allows token to be sent via  req.query or headers
     let token = req.query.token || req.headers.authorization;
 
@@ -15,11 +16,12 @@ module.exports = {
       token = token.split(" ").pop().trim();
     }
 
+    // the first time user logs in, server hasn't generated a token yet
     if (!token) {
       return req;
     }
 
-    // verify token and get user data out of it
+    // if the req has a token attached, verify token and get user data out of it
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
@@ -27,7 +29,7 @@ module.exports = {
       console.log("Invalid token");
     }
 
-    // send to next endpoint
+    // pass to resolvers as context, so resolver can access the user from context.user
     return req;
   },
   signToken: function ({ username, email, _id }) {
