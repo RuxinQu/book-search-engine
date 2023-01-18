@@ -16,6 +16,7 @@ const http = require("http");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { resolvers, typeDefs } = require("./schemas/index");
+const { authMiddleware } = require("./utils/auth");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,6 +29,7 @@ const server = new ApolloServer({
   resolvers,
   typeDefs,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  context: authMiddleware,
 });
 
 // if we're in production, serve client/build as static assets
