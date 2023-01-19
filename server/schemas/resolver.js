@@ -43,7 +43,6 @@ const resolvers = {
     },
 
     saveBook: async (parent, args, context) => {
-      console.log(context.user)
       if (!context.user) {
         throw new GraphQLError("You need to login!");
       }
@@ -54,13 +53,14 @@ const resolvers = {
       );
       return updatedUser;
     },
+    // delete the book if bookId= arg.bookId
     removeBook: async (parent, args, context) => {
       if (!context.user) {
         throw new GraphQLError("You need to login!");
       }
       const updatedUser = await User.findOneAndUpdate(
         { _id: context.user._id },
-        { $pull: { savedBooks: args.bookId } },
+        { $pull: { savedBooks: { bookId: args.bookId } } },
         { new: true }
       );
       return updatedUser;

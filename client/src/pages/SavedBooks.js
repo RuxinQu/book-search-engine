@@ -6,9 +6,9 @@ import {
   Card,
   Button,
 } from "react-bootstrap";
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from "@apollo/client";
 import { REMOVE_BOOK } from "../utils/mutations";
-import {GET_ME} from '../utils/queries'
+import { GET_ME } from "../utils/queries";
 import { removeBookId } from "../utils/localStorage";
 import Auth from "../utils/auth";
 
@@ -30,7 +30,6 @@ const SavedBooks = () => {
       await removeBook({
         variables: { bookId },
       });
-
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {

@@ -10,7 +10,7 @@ const typeDefs = `#graphql
   type Book{
     authors: [String]
     description: String
-    bookID: String
+    bookId: String
     image: String
     link: String
     title: String
