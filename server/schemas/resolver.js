@@ -12,13 +12,13 @@ const resolvers = {
           },
         });
 
-      return User.findById(args.id);
+      return await User.findById(context.user._id).populate("books");
     },
   },
   Mutation: {
-    login: async (parent, args, { email, password }) => {
+    login: async (parent, { email, password }) => {
       //check if the email exist
-      const user = User.findOne({ email });
+      const user = await User.findOne({ email });
       if (!user) {
         throw new GraphQLError("No user with this email found");
       }
@@ -26,14 +26,14 @@ const resolvers = {
       const checkPw = await user.isCorrectPassword(password);
       if (!checkPw) {
         throw new GraphQLError("Incorrect password");
-      };
+      }
       //the first time user login, server generates a token
       const token = signToken(user);
       //after login, the server needs to send a new token
       return { token, user };
     },
 
-    addUser: async (parent, args, { username, email, password }) => {
+    addUser: async (parent, { username, email, password }) => {
       //create a user and generate a token
       const user = await User.create({ username, email, password });
       const token = signToken(user);
@@ -50,7 +50,7 @@ const resolvers = {
         { $addToSet: { savedBooks: args.input } },
         { new: true }
       );
-      return  updatedUser ;
+      return updatedUser;
     },
     removeBook: async (parent, args, context) => {
       if (!context.user) {
@@ -61,7 +61,7 @@ const resolvers = {
         { $pull: { savedBooks: args.bookId } },
         { new: true }
       );
-      return  updatedUser ;
+      return updatedUser;
     },
   },
 };

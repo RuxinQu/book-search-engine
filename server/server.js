@@ -46,7 +46,7 @@ const startApolloServer = async () => {
   await server.start();
   app.use(
     "/",
-    cors(),
+    // cors(),
     bodyParser.json(),
     // expressMiddleware accepts the same arguments: an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
