@@ -5,6 +5,7 @@ const { signToken } = require("../utils/auth");
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
+      // check if the user is login
       if (!context.user)
         throw new GraphQLError("You must be logged in to query this schema", {
           extensions: {
@@ -42,6 +43,7 @@ const resolvers = {
     },
 
     saveBook: async (parent, args, context) => {
+      console.log(context.user)
       if (!context.user) {
         throw new GraphQLError("You need to login!");
       }

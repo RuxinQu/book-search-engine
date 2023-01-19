@@ -29,7 +29,7 @@ const server = new ApolloServer({
   resolvers,
   typeDefs,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  context: authMiddleware,
+
 });
 
 // if we're in production, serve client/build as static assets
@@ -46,11 +46,12 @@ const startApolloServer = async () => {
   await server.start();
   app.use(
     "/",
-    // cors(),
+    cors(),
     bodyParser.json(),
-    // expressMiddleware accepts the same arguments: an Apollo Server instance and optional configuration options
+    // For Apollo server 4: expressMiddleware accepts the same arguments: an Apollo Server instance and optional configuration options
+    // add authmiddleware as context, persist the request
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }),
+      context: authMiddleware,
     })
   );
   db.once("open", async () => {

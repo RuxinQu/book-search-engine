@@ -33,7 +33,6 @@ const SignupForm = () => {
       const { data } = await signup({
         variables: { ...userFormData },
       });
-      console.log(data)
       Auth.login(data.addUser.token)
     } catch (err) {
       console.log(err);

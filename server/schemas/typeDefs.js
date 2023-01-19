@@ -19,7 +19,7 @@ const typeDefs = `#graphql
   input savedBook{
     authors: [String]
     description: String
-    bookID: String
+    bookId: String
     image: String
     link: String
     title: String
