@@ -7,7 +7,11 @@ import Auth from "../utils/auth";
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
-  const [login, { error, loading, data }] = useMutation(LOGIN_USER);
+
+  // useMutation returns a mutate function which can be called to execute mutation, because unlike useQuery, useMutation doesn't execute automatically
+  // on render, instead the mutate function(in this case login) should be called. It also returns fields that represent the current status of the
+  // mutation's execution(loading, error).
+  const [login, { loading, data }] = useMutation(LOGIN_USER);
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -28,9 +32,7 @@ const LoginForm = () => {
 
     try {
       const { data } = await login({ variables: { ...userFormData } });
-      Auth.login(data.login.token)
-  
-      
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
