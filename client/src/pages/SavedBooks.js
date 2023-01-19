@@ -13,7 +13,9 @@ import { removeBookId } from "../utils/localStorage";
 import Auth from "../utils/auth";
 
 const SavedBooks = () => {
+  // get user data from useQuery
   const { loading, data } = useQuery(GET_ME);
+  // get the mutation function removeBook from useMutation 
   const [removeBook] = useMutation(REMOVE_BOOK);
 
   const userData = data?.me || [];
